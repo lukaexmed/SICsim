@@ -1,3 +1,5 @@
+package simulator;
+
 import java.io.IOException;
 
 public class Device{
@@ -7,11 +9,11 @@ public class Device{
         return true;
     }
 
-    public int read() throws IOException{
+    public byte read(){
         return 0;
     }
 
-    public void write(int data) throws IOException{
+    public void write(byte data){
     }
 
 }
