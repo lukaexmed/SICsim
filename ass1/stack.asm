@@ -1,5 +1,10 @@
 stack	START 0
 
+	
+	
+
+
+
 stackinit
 	LDA 	#sklad		.inicializiramo stackPt na zacetni naslov sklada
 	STA	skladPt
@@ -7,7 +12,7 @@ stackinit
 
 
 stackpush
-	.STA	@stackPtr
+	STA	@skladPt
 	STA	temp		.shranimo A v temp
 	LDA	skladPt
 	ADD	=3		. konstanta 3, ker imamo 24 bitne registre
@@ -23,7 +28,7 @@ stackpop
 	SUB	=3
 	STA	skladPt
 	LDA	temp
-	.LDA	@stackPtr
+	LDA	@kladPt
 	RSUB
 
 
