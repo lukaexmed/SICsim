@@ -1,6 +1,4 @@
-package simulator;
-
-import java.io.IOException;
+package sic.simulator;
 
 public class Device{
 

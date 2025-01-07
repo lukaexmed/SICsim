@@ -1,4 +1,4 @@
-package simulator;
+package sic.simulator;
 
 import java.util.HashMap;
 
@@ -66,6 +66,23 @@ public class Opcode{
     public static final int WD = 0xDC;
 
 
+    public static final int START       = 0;  //len 0
+    public static final int END         = 1;  //len 0
+
+    public static final int ORG         = 2;   //len 0
+    public static final int LTORG       = 3;   //len 0
+
+    public static final int BASE        = 4;    //len 0
+    public static final int NOBASE      = 5;    //len 0
+
+    public static final int EQU         = 6;    //len 0
+
+    public static final int RESB        = 7;    // len 0
+    public static final int RESW        = 8;    //len 0
+    public static final int BYTE        = 9;    // len 1
+    public static final int WORD        = 10;   //len 3
+
+
     //nixbpe biti v prihodnje
     private boolean n;
     private boolean i;
@@ -83,6 +100,39 @@ public class Opcode{
         this.p = (opcode2 & 0b00100000) != 0;
         this.e = (opcode2 & 0b00010000) != 0;
     }
+    public Opcode(){
+        this.n = false;
+        this.i = false;
+        this.x = false;
+        this.b = false;
+        this.p = false;
+        this.e = false;
+    }
+    public void setN(){
+        this.n = true;
+    }
+    public void setI(){
+        this.i = true;
+    }
+    public void setX(){
+        this.x = true;
+    }
+    public void setB(){
+        this.b = true;
+    }
+    public void setP(){
+        this.p = true;
+    }
+    public void setE(){
+        this.e = true;
+    }
+
+    public boolean getN(){return this.n;}
+    public boolean getI(){return this.i;}
+    public boolean getX(){return this.x;}
+    public boolean getB(){return this.b;}
+    public boolean getP(){return this.p;}
+    public boolean getE(){return this.e;}
 
     public boolean isSic(){
         return !n && !i;
@@ -176,6 +226,17 @@ public class Opcode{
         mnemonic.put(WD, "WD");
         mnemonic.put(TIO, "TIO");
         mnemonic.put(STT,"STT");
+        mnemonic.put(START,"START");
+        mnemonic.put(END,"END");
+        mnemonic.put(ORG,"ORG");
+        mnemonic.put(LTORG,"LTORG");
+        mnemonic.put(BASE,"BASE");
+        mnemonic.put(NOBASE,"NOBASE");
+        mnemonic.put(EQU,"EQU");
+        mnemonic.put(RESB,"RESB");
+        mnemonic.put(RESW,"RESW");
+        mnemonic.put(BYTE,"BYTE");
+        mnemonic.put(WORD,"WORD");
     }
     public static String getMnemonic(int opcode){
         return mnemonic.getOrDefault(opcode, "Neznan opcode");

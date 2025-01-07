@@ -1,4 +1,4 @@
-package simulator.UI;
+package sic.simulator.UI;
 
 public interface SIMEventListener {
     void onStart();

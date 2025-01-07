@@ -1,4 +1,4 @@
-package simulator;
+package sic.simulator;
 
 import java.io.*;
 
@@ -34,7 +34,7 @@ public class Utils {
             if(prebrano != 'H'){
                 return false;
             }
-            //nareto za object slack!!! za dense zakomentiraj
+            //nareto za object dense!!! za slack odkomentiraj spejse pa dodaj kakega se v while
 //            r.read(); // space
             readString(r, 6); // prebere ime
 //            r.read(); // space

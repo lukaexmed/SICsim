@@ -1,6 +1,6 @@
-package simulator.UI;
+package sic.simulator.UI;
 
-import simulator.Opcode;
+import sic.simulator.Opcode;
 
 import javax.swing.*;
 import java.awt.*;

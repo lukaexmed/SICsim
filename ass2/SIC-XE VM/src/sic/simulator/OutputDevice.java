@@ -1,4 +1,4 @@
-package simulator;
+package sic.simulator;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,6 +19,11 @@ public class OutputDevice extends Device{
         } catch (IOException e) {
             System.out.println("Error writing to output stream");
         }
+    }
+
+    @Override
+    public boolean test(){
+        return this.output != null;
     }
 
 }

@@ -1,4 +1,4 @@
-package simulator;
+package sic.simulator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +19,17 @@ public class InputDevice extends Device{
             System.out.println("Error reading input.");
         }
         return 0;
+    }
+
+    @Override
+    public boolean test(){
+        try {
+            if(this.input.available() > 0)
+                return true;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
 }

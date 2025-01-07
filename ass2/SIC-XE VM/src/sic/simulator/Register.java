@@ -1,4 +1,4 @@
-package simulator;
+package sic.simulator;
 
 public class Register{
     private Object[] registers;

@@ -1,6 +1,5 @@
-package simulator;
+package sic.simulator;
 
-import javax.crypto.Mac;
 import java.util.Timer;
 import java.util.TimerTask;
 

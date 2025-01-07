@@ -1,6 +1,7 @@
-package simulator;
+package sic.simulator;
 
 
+import java.io.FileNotFoundException;
 
 public class Machine{
 
@@ -20,6 +21,14 @@ public class Machine{
         devices[0] = new InputDevice(System.in);
         devices[1] = new OutputDevice(System.out);
         devices[2] = new OutputDevice(System.err);
+        //zafila bin z vsemi devajsi
+//        for(int i = 3; i < MAX_DEVICES; i++){
+//            try {
+//                devices[i] = new FileDevice(Integer.toHexString(i) + ".dev", "rw");
+//            } catch (FileNotFoundException e) {
+//                System.err.println("Error writing file");
+//            }
+//        }
 
         regs = new Register();
         //dodaj še FileDevice?
@@ -216,7 +225,7 @@ public class Machine{
         //takojšnje
             return operand;
     }
-    public int branje(Opcode flags, int operand){
+    public int naslavljanjeDevices(Opcode flags, int operand){
         if(flags.isPosredno()){
             return mem.getByte(mem.getWord(operand));
         }
@@ -260,17 +269,17 @@ public class Machine{
                 regs.setPC(operand);
                 break;
             case Opcode.JEQ:
-                if(regs.getSW() == 0x40) regs.setPC(operand);
+                if(regs.getSW() == 0x40) regs.setPC(flags.isPosredno() ? mem.getWord(operand) : operand);
                 break;
             case Opcode.JGT:
-                if(regs.getSW() == 0x80) regs.setPC(operand);
+                if(regs.getSW() == 0x80) regs.setPC(flags.isPosredno() ? mem.getWord(operand) : operand);
                 break;
             case Opcode.JLT:
-                if(regs.getSW() == 0x00) regs.setPC(operand);
+                if(regs.getSW() == 0x00) regs.setPC(flags.isPosredno() ? mem.getWord(operand) : operand);
                 break;
             case Opcode.JSUB:
                 regs.setL(regs.getPC());
-                regs.setPC(operand);
+                regs.setPC(flags.isPosredno() ? mem.getWord(operand) : operand);
                 break;
                 //LOADS
             case Opcode.LDA:
@@ -280,7 +289,11 @@ public class Machine{
                 regs.setB(naslavljanje(flags, operand));
                 break;
             case Opcode.LDCH:
-                regs.setA(naslavljanje(flags, operand) & 0xFF); //samo en bajt, skrajno desni
+                regs.setA(mem.getByte(operand)); //samo en bajt, skrajno desni
+//                System.out.print("LDCH ");
+//                System.out.print("Naslov: "+ operand);
+//                System.out.print("Vrednost na naslovu;" + (mem.getByte(operand)));
+//                if(flags.isPreprosto())System.out.print("Preprosto");
                 break;
             case Opcode.LDF:
                 notImplemented("LDF");
@@ -310,10 +323,6 @@ public class Machine{
             case Opcode.OR:
                 regs.setA(naslavljanje(flags, operand) | regs.getA());
                 break;
-            case Opcode.RD:
-                byte data = devices[branje(flags,operand)].read();
-                regs.setA(data);
-                break;
             case Opcode.RSUB:
                 regs.setPC(regs.getL());
                 break;
@@ -321,13 +330,13 @@ public class Machine{
                 notImplemented("SSK");
                 break;
             case Opcode.STA:
-                mem.setWord(branje(flags, operand), regs.getA());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getA());
                 break;
             case Opcode.STB:
-                mem.setWord(branje(flags, operand), regs.getB());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getB());
                 break;
             case Opcode.STCH:
-                mem.setByte(branje(flags, operand), regs.getA() & 0xFF);
+                mem.setByte(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getA() & 0xFF);
                 break;
             case Opcode.STF:
                 notImplemented("STF");
@@ -336,19 +345,19 @@ public class Machine{
                 notImplemented("STI");
                 break;
             case Opcode.STL:
-                mem.setWord(branje(flags, operand), regs.getL());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getL());
                 break;
             case Opcode.STS:
-                mem.setWord(branje(flags, operand), regs.getS());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getS());
                 break;
             case Opcode.STSW:
-                mem.setWord(branje(flags, operand), regs.getSW());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getSW());
                 break;
             case Opcode.STT:
-                mem.setWord(branje(flags, operand), regs.getT());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getT());
                 break;
             case Opcode.STX:
-                mem.setWord(branje(flags, operand), regs.getX());
+                mem.setWord(flags.isPosredno() ? mem.getWord(operand) : operand, regs.getX());
                 break;
             case Opcode.SUB:
                 regs.setA(regs.getA() - naslavljanje(flags, operand));
@@ -357,7 +366,7 @@ public class Machine{
                 notImplemented("SUBF");
                 break;
             case Opcode.TD:
-                regs.setSW(devices[branje(flags,operand)].test() ? 0x40 : 0);
+                regs.setSW(devices[naslavljanjeDevices(flags,operand)].test() ? 0 : 0x40);
                 break;
             case Opcode.TIX:
                 regs.setX(regs.getX() +1);
@@ -368,7 +377,11 @@ public class Machine{
                 else regs.setSW(0x40);
                 break;
             case Opcode.WD:
-                devices[naslavljanje(flags,operand)].write((byte)(regs.getA() & 0xFF));
+                devices[naslavljanjeDevices(flags,operand)].write((byte)(regs.getA() & 0xFF));
+                break;
+            case Opcode.RD:
+                byte data = devices[naslavljanjeDevices(flags,operand)].read();
+                regs.setA(data);
                 break;
             default: return false;
         }

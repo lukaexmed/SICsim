@@ -1,15 +1,12 @@
-package simulator;
+package sic.simulator;
 
-import jdk.jshell.execution.Util;
-import simulator.UI.SIM;
-import simulator.UI.SIMEventListener;
+import sic.simulator.UI.SIM;
+import sic.simulator.UI.SIMEventListener;
 
-import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Scanner;
 
 public class Main{
     public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -23,7 +20,9 @@ public class Main{
         if(Utils.loadSection(m,r)){
             System.out.println("Load complete.");
         }
+        sim.getMemoryView().updateMemory(m.mem.memory);
 
+        //registrira se event listneer object, kjer overrajdamo metode
         sim.addSIMEventListener(new SIMEventListener() {
             @Override public void onStart() {
                 ura.start();
@@ -38,6 +37,7 @@ public class Main{
                 sim.getRegisterView().updateReg("F", "000000000000");
                 sim.getRegisterView().updateReg("PC", m.regs.getPCs());
                 sim.getRegisterView().updateReg("SW", m.regs.getSWs());
+                sim.getMemoryView().updateMemory(m.mem.memory);
             }
             @Override public void onStep() {
                 m.execute();
@@ -51,6 +51,7 @@ public class Main{
                 sim.getRegisterView().updateReg("F", "000000000000");
                 sim.getRegisterView().updateReg("PC", m.regs.getPCs());
                 sim.getRegisterView().updateReg("SW", m.regs.getSWs());
+                sim.getMemoryView().updateMemory(m.mem.memory);
             }
             @Override public void onStop() {
                 sim.getRegisterView().updateOp(m.curOp);
@@ -63,6 +64,7 @@ public class Main{
                 sim.getRegisterView().updateReg("F", "000000000000");
                 sim.getRegisterView().updateReg("PC", m.regs.getPCs());
                 sim.getRegisterView().updateReg("SW", m.regs.getSWs());
+                sim.getMemoryView().updateMemory(m.mem.memory);
                 ura.stop();
             }
             @Override public void onReset() {
@@ -77,6 +79,7 @@ public class Main{
                 }
                 sim.getRegisterView().resetOp();
                 Utils.loadSection(m, fr);
+                sim.getMemoryView().updateMemory(m.mem.memory);
             }
         });
 

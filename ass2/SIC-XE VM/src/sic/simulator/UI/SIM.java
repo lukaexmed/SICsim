@@ -1,4 +1,4 @@
-package simulator.UI;
+package sic.simulator.UI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,34 +7,36 @@ import java.util.List;
 
 public class SIM extends javax.swing.JFrame {
     RegisterView registerView;
-    private List<SIMEventListener> listeners = new ArrayList<SIMEventListener>();
+    MemoryView memoryView;
+    private SIMEventListener listener;
     public SIM() {
-        setTitle("SIM");
-        setSize(800,600);
+        setTitle("SIC-SIM-LUKA");
+        setSize(920,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setLayout(null);
 
 
         registerView = new RegisterView();
-//        add(memPanel(), BorderLayout.EAST);
-        add(controlPanel(), BorderLayout.WEST);
-        add(registerView, BorderLayout.NORTH);
+        registerView.setBounds(20, 20, 300, 400);
+        memoryView = new MemoryView();
+        memoryView.setBounds(350, 20, 550, 500);
+        JPanel controlPanel = controlPanel();
+        controlPanel.setBounds(20, 450, 300, 100);
+        add(controlPanel);
+        add(registerView);
+        add(memoryView);
 
     }
-//    private JScrollPane memPanel(){
-//        return new MemoryView().createPanel();
-//    }
-
-//    private JPanel regPanel(){
-//        return new RegisterView().;
-//    }
 
     public RegisterView getRegisterView(){
         return registerView;
     }
+    public MemoryView getMemoryView(){
+        return memoryView;
+    }
 
     public void addSIMEventListener(SIMEventListener listener){
-        listeners.add(listener);
+        this.listener = listener;
     }
     private JPanel controlPanel(){
         JPanel controlPanel = new JPanel();
@@ -44,11 +46,10 @@ public class SIM extends javax.swing.JFrame {
         JButton resetButton = new JButton("Reset");
         JButton stepButton = new JButton("Step");
 
-
-        startButton.addActionListener(e -> {listeners.forEach(SIMEventListener::onStart);});
-        stopButton.addActionListener(e -> {listeners.forEach(SIMEventListener::onStop);});
-        resetButton.addActionListener(e -> {listeners.forEach(SIMEventListener::onReset);});
-        stepButton.addActionListener(e -> {listeners.forEach(SIMEventListener::onStep);});
+        startButton.addActionListener(e -> {listener.onStart();});
+        stopButton.addActionListener(e -> {listener.onStop();});
+        resetButton.addActionListener(e -> {listener.onReset();});
+        stepButton.addActionListener(e -> {listener.onStep();});
 
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
