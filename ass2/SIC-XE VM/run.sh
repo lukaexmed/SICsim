@@ -2,10 +2,10 @@
 
 mkdir /bin
 
-javac -d bin src/simulator/*.java src/simulator/UI/*.java
+javac -d bin src/sic/simulator/*.java src/sic/simulator/UI/*.java
 
 cd bin
 
-java simulator.Main ../inp/"$1"
+java sic.simulator.Main ../inp/"$1"
 
 
