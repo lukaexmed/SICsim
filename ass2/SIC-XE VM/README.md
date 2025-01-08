@@ -9,4 +9,4 @@ Za prevajanje in poganjate poženite `run.sh` s imenom datoteke kot argument
 Primer:
 `./run.sh aritmetika.obj`
 
-Ko se simulator zažene imate na voljo postopno izvajanje s gumbom STEP, ali pa izvajanje celotnega programa s gumbom STOP. 
+Ko se sic.simulator zažene imate na voljo postopno izvajanje s gumbom STEP, ali pa izvajanje celotnega programa s gumbom STOP. 

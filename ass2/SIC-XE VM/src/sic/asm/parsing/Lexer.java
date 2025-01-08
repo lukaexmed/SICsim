@@ -1,4 +1,4 @@
-package asm.parsing;
+package sic.asm.parsing;
 
 /**
  * Lexer - low level input manipulation.

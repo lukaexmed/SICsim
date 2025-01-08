@@ -1,8 +1,8 @@
-package asm.mnemonics;
+package sic.asm.mnemonics;
 
-import asm.code.Node;
-import asm.parsing.Parser;
-import asm.parsing.SyntaxError;
+import sic.asm.code.Node;
+import sic.asm.parsing.Parser;
+import sic.asm.parsing.SyntaxError;
 
 
 /**

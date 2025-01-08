@@ -1,4 +1,4 @@
-package asm.parsing;
+package sic.asm.parsing;
 
 /**
  * Podporni razred za predmet Sistemska programska oprema.

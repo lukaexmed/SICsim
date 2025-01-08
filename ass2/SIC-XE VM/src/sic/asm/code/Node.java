@@ -1,12 +1,13 @@
-package asm.code;
+package sic.asm.code;
 
-import asm.mnemonics.Mnemonic;
+import sic.asm.mnemonics.Mnemonic;
+import sic.simulator.Opcode;
 
 public abstract class Node {
 
-    protected String label;
-    protected Mnemonic mnemonic;
-    protected String comment;
+    protected String label; // ime vrstice na začetku
+    protected Mnemonic mnemonic; //tu not je opcode pa
+    protected String comment; // inline comment
 
     public Node(Mnemonic mnemonic) {
         this.mnemonic = mnemonic;
@@ -37,12 +38,49 @@ public abstract class Node {
      */
     @Override
     public String toString() {
-        return mnemonic.toString() + " " + operandToString();
+        return mnemonic.toString() + " " + operandToString()+"\t\t"+comment;
     }
 
     public String operandToString() {
         return mnemonic.operandToString(this);
     }
 
+    public String resolvedToString(){
+        return "nekaj";
+    }
+    public boolean greVObj(){
+        return false;
+    }
+    public int objLen(){
+        return 0;
+    }
+    public String objPrint(){
+        return "";
+    }
+    public int length(){
+        return 0;
+    }
+    //vstop v dan node
+    public void enter(Code code){
+        code.setLocCtr(code.getNextLocCtr());
+        code.setNextLocCtr(code.getLocCtr() + this.length());
+    }
+    //izspot iz danega noda
+    public void leave(Code code){
+    }
+
+    //v symtab shranjujemo labele in ukaze
+    public void activate(Code code){
+        if(this.getLabel() != null && !this.getLabel().isEmpty()){
+            code.defineSymbol(this.getLabel(), code.getLocCtr());
+        }
+    }
+    //razreševanje simbolov
+    public void resolve(Code code) throws SemanticError{
+    }
+
+    public String emitCode(byte[] buffer, int offset){
+        return "      ";
+    }
 }
 

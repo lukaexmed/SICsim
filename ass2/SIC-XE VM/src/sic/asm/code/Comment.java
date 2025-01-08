@@ -1,4 +1,4 @@
-package asm.code;
+package sic.asm.code;
 
 public class Comment extends Node {
 

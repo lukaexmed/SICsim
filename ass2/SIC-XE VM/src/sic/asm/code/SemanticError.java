@@ -1,4 +1,4 @@
-package asm.code;
+package sic.asm.code;
 
 @SuppressWarnings("serial")
 public class SemanticError extends Exception {
