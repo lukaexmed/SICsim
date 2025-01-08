@@ -17,10 +17,10 @@ horner START 0
 halt    J      halt
 
 x	WORD 2
-result  RESW 1
 x4	WORD 1
 x3	WORD 2
 x2	WORD 3
 x1	WORD 4
 x0	WORD 5
+result  RESW 1
 	END horner

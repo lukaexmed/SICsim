@@ -22,14 +22,27 @@ public class InstructionF2 extends Node{
         this.op1 = op1;
         this.enOperand = true;
     }
-
+    public String regToString(int reg) {
+        switch (reg) {
+            case 0: return "A";
+            case 1: return "X";
+            case 2: return "L";
+            case 3: return "B";
+            case 4: return "S";
+            case 5: return "T";
+            case 6: return "F";
+            case 8: return "PC";
+            case 9: return "SW";
+            default: return "";
+        }
+    }
     @Override
     public int length(){
         return 2;
     }
     @Override
     public String toString(){
-        return ((this.getLabel().isEmpty() ? "      " : this.getLabel()) + "\t" + mnemonic.toString() + "\t" + Integer.toString(op1) + "\t" + (this.enOperand ? "" : Integer.toString(op2))+"\t\t"+comment);
+        return ((this.getLabel().isEmpty() ? "      " : this.getLabel()) + "\t" + mnemonic.toString() + "\t" + regToString(op1) + " , " + (this.enOperand ? "" : regToString(op2))+"\t\t"+comment);
     }
     @Override
     public String emitCode(byte[] buffer, int offset) {

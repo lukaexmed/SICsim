@@ -38,9 +38,9 @@ public class Utils {
 //            r.read(); // space
             readString(r, 6); // prebere ime
 //            r.read(); // space
-            location = readWord(r);
+            location = readWord(r); //start
 //            r.read(); // space
-            lenght = readWord(r);
+            lenght = readWord(r); //len
             r.read(); // EOL
 
             prebrano = r.read(); // T

@@ -81,5 +81,22 @@ public class Storage extends Node{
         }
         return 0;
     }
+    @Override
+    public String emitCode(byte[] buffer, int offset){
+        if(mnemonic.opcode == Opcode.BYTE){
+            return objPrint();
+        }
+        if(mnemonic.opcode == Opcode.WORD){
+            return objPrint();
+        }
+        else if(mnemonic.opcode == Opcode.RESW){
+            return "000000";
+        }
+        else{
+            return "00";
+        }
+
+    }
 
 }
+

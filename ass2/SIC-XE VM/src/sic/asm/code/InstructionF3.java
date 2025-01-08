@@ -31,7 +31,13 @@ public class InstructionF3 extends Node {
 
     @Override
     public String toString(){
-        return ((this.getLabel().isEmpty() ? "      " : this.getLabel()) + "\t" + mnemonic.toString() + "\t" + (this.brezOperandov ? "" : (symbol == null ? Integer.toString(op1) : symbol)) + "\t\t"+comment);
+        StringBuilder sb = new StringBuilder();
+        if(flags.isTakojsnje())
+            sb.append("#");
+        if(flags.isPosredno())
+            sb.append("@");
+        sb.append(symbol == null ? Integer.toString(op1) : symbol);
+        return ((this.getLabel().isEmpty() ? "      " : this.getLabel()) + "\t" + mnemonic.toString() + "\t" + (this.brezOperandov ? "" : sb) + "\t\t"+comment);
 
     }
     @Override
@@ -42,6 +48,8 @@ public class InstructionF3 extends Node {
     @Override
     public void resolve(Code code) throws SemanticError {
         op1 = (symbol == null ? op1 : code.resolveSymbol(symbol));
+        if(flags.isTakojsnje())
+            return;
         if(code.isPCrelative(op1)){
             flags.setP();
             op1 -= code.getNextLocCtr();
@@ -55,9 +63,9 @@ public class InstructionF3 extends Node {
             //moramo spravit na interval [0, 4095]
             op1 = (op1 < 0 ? op1 + 4096 : op1) & 0xFFF;
         }
-        else if(flags.isTakojsnje()){
-            return;
-        }
+//        else if(true){ //implementacija za direktno
+//            return;
+//        }
         else{
             throw new SemanticError("Nepravilno naslavljanje" + this);
         }
@@ -83,5 +91,4 @@ public class InstructionF3 extends Node {
         );
         return hex;
     }
-
 }

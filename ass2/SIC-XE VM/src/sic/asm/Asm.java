@@ -31,7 +31,7 @@ public class Asm {
 
 
     public static void main(String[] args) {
-//        String filename = "inp/arith.asm";
+        //String filename = "inp/cat.asm";
         String filename = args[0];
         String input;
         byte[] buff = new byte[4096];
@@ -100,21 +100,19 @@ public class Asm {
         }
         code.begin();
         try {
-            obj.writeChars(code.obj(buff));
+            obj.writeBytes(code.obj(buff));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        code.end();
         //System.out.print(code.lst(buff));
         //System.out.println(code.obj(buff));
+        code.begin();
         try {
             lst.writeChars(code.lst(buff));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        code.end();
-
-        code.begin();
-
         code.end();
     }
 

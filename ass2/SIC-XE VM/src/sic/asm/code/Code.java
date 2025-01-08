@@ -118,12 +118,14 @@ public class Code {
     public String obj(byte[] buffer){
         StringBuilder sb = new StringBuilder();
         StringBuilder vrstica = new StringBuilder();
+        StringBuilder temp = new StringBuilder();
         sb.append("H");
         sb.append(String.format("%-6s",this.getName()));
         sb.append(String.format("%06X",this.getStart()));
         sb.append(String.format("%06X",(this.getEnd())));
         sb.append("\n");
         int odmik = 0;
+        boolean first = false;
         for(Node node : program){
             node.enter(this);
             if(!(node instanceof DirectiveD) && !(node instanceof DirectiveDn) && !(node instanceof Comment)) {
@@ -134,14 +136,29 @@ public class Code {
                     vrstica.append((node.objPrint()));
                 }
             }
-            if(vrstica.length() > (60-2) || ((node instanceof Storage) && !(node.greVObj()))){//60 je lahko v vrstici znakov, pa en 2 dolgi se lahko not gre
+            if(vrstica.length() > 60 || ((node instanceof Storage) && !(node.greVObj()))){//60 je lahko v vrstici znakov, pa en 2 dolgi se lahko not gre
                 if(!vrstica.isEmpty()) {
+                    if(vrstica.length() > 60){
+                        temp.append(vrstica, 60, vrstica.length()); // odreze to kaj prek glea v temp
+                        vrstica.setLength(60);
+                        first = true;
+                    }
                     sb.append(String.format("T%06X%02X", odmik, vrstica.length() / 2));
-                    sb.append(vrstica.toString() + "\n");
-//                    vrstica.delete(0, vrstica.length());
+                    sb.append(vrstica).append("\n");
+                    odmik = odmik + vrstica.length()/2;
+                    vrstica.delete(0, vrstica.length());
                     vrstica.setLength(0);
                 }
-                odmik = getLocCtr()+node.length();
+                if(first) {
+                    vrstica.append(temp);//temp od prej se doda na zacetek
+                    temp.setLength(0);
+                    first = false;
+//                    odmik = getLocCtr();
+                }
+//                else {
+//                    odmik = getLocCtr() + node.length();
+//                }
+
             }
             node.leave(this);
         }

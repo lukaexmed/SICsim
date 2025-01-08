@@ -142,10 +142,10 @@ public class Opcode{
     }
     public boolean isPosredno(){ // v operandu je naslov do naslova vrednosti
         return n && !i;
-    }
+    } // @
     public boolean isTakojsnje(){ // direkt v operandu je vrednost
         return !n && i;
-    }
+    } // #
     public boolean isIndeksirano(){
         return x;
     }

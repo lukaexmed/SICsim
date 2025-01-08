@@ -129,6 +129,13 @@ public class Parser {
         throw new SyntaxError(String.format("Invalid storage specifier '%s'", lexer.peek()), lexer.row, lexer.col);
     }
 
+    public byte[] parseByte() throws SyntaxError {
+        int num = parseNumber(0, Code.MAX_WORD);
+        byte[] data = new byte[1];
+        data[0] = (byte) (num);
+        return data;
+    }
+
     // instruction parser
 
     public Node parseInstruction() throws SyntaxError {

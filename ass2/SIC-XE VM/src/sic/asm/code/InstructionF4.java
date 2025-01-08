@@ -31,6 +31,7 @@ public class InstructionF4 extends Node {
     @Override
     public void resolve(Code code) throws SemanticError {
         op1 = (symbol == null ? op1 : code.resolveSymbol(symbol));
+        flags.setE();
     }
 
     @Override
